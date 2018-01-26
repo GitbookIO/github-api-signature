@@ -13,6 +13,7 @@
   "author": "jpreynat <johan.preynat@gmail.com>",
   "license": "Apache-2.0",
   "dependencies": {
+    "babel-runtime": "^6.26.0",
     "openpgp": "^2.6.2",
     "pad": "^2.0.3"
   },

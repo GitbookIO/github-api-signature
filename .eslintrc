@@ -1,0 +1,15 @@
+{
+    "parser": "babel-eslint",
+    "extends": [
+        "gitbook"
+    ],
+    "plugins": [
+        "flowtype"
+    ],
+    "env": {
+         "jest": true
+    },
+    "rules": {
+        "import/no-extraneous-dependencies": ["error", { "devDependencies": ["**/tests/*.js"] }]
+    }
+}

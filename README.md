@@ -47,8 +47,8 @@ generateKeyPair(user, passphrase, numBits)
     //     privateKey: '-----BEGIN PGP PRIVATE KEY BLOCK-----...'
     // };
 
-    // Add publicKey to Dohn Joe's GitHub account settings
-    // Use privateKey to create commits signatures for Dohn Joe's as committer
+    // Add publicKey to Dohn Joe's GitHub account settings.
+    // Use privateKey to create commits signatures for Dohn Joe's as committer.
 });
 ```
 

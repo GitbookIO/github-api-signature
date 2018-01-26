@@ -1,6 +1,6 @@
 {
   "name": "github-api-signature",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Node.js signature generator for GitHub API using a PGP key",
   "main": "lib/index.js",
   "repository": {

@@ -1,9 +1,7 @@
-/* @flow */
-
 import test from 'ava';
-import normalizeOffset from '../normalizeOffset';
-import commitToString from '../commitToString';
-import type { CommitPayload } from '../../types';
+import { CommitPayload } from '../../types';
+import { commitToString } from '../commitToString';
+import { normalizeOffset } from '../normalizeOffset';
 
 const date = new Date('2018-01-01');
 const timezone = normalizeOffset(date.getTimezoneOffset());

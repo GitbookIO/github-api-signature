@@ -1,9 +1,7 @@
-/* @flow */
-
 import test from 'ava';
-import userToString from '../userToString';
-import normalizeOffset from '../normalizeOffset';
-import type { GitHubUser } from '../../types';
+import { GitHubUser } from '../../types';
+import { normalizeOffset } from '../normalizeOffset';
+import { userToString } from '../userToString';
 
 test('generate the correct string given a GitHubUser', t => {
     const date = new Date('1970-01-01');

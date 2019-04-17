@@ -1,12 +1,10 @@
-/* @flow */
-
-import userToString from './userToString';
-import type { CommitPayload } from '../types';
+import { CommitPayload } from '../types';
+import { userToString } from './userToString';
 
 /*
  * Transform a commit payload to a commit message
  */
-function commitToString({
+export function commitToString({
     message,
     tree,
     parents,
@@ -22,5 +20,3 @@ committer ${userToString(committer)}
 
 ${message}`.trim();
 }
-
-export default commitToString;

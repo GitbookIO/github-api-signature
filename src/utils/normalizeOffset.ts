@@ -1,5 +1,3 @@
-/* @flow */
-
 import pad from 'pad';
 
 /*
@@ -9,9 +7,9 @@ import pad from 'pad';
  * always return "+0000" (offsetIsZero defaults to true), but the original
  * code can be used in case of updates.
  */
-function normalizeOffset(
+export function normalizeOffset(
     offset: number,
-    offsetIsZero?: boolean = true
+    offsetIsZero: boolean = true
 ): string {
     if (offsetIsZero) {
         return '+0000';
@@ -19,9 +17,7 @@ function normalizeOffset(
 
     return (
         (offset <= 0 ? '+' : '-') +
-        pad(2, `${parseInt(Math.abs(offset / 60), 10)}`, '0') +
+        pad(2, `${parseInt(String(Math.abs(offset / 60)), 10)}`, '0') +
         pad(2, `${Math.abs(offset % 60)}`, '0')
     );
 }
-
-export default normalizeOffset;

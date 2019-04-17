@@ -1,7 +1,5 @@
-/* @flow */
-
 import test from 'ava';
-import normalizeOffset from '../normalizeOffset';
+import { normalizeOffset } from '../normalizeOffset';
 
 test('return GitHub API value by default', t => {
     t.is(normalizeOffset(-60), '+0000');

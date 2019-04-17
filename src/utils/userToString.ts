@@ -1,12 +1,10 @@
-/* @flow */
-
-import normalizeOffset from './normalizeOffset';
-import type { GitHubUser } from '../types';
+import { GitHubUser } from '../types';
+import { normalizeOffset } from './normalizeOffset';
 
 /*
  * Transform an user to a string for commit message
  */
-function userToString(user: GitHubUser): string {
+export function userToString(user: GitHubUser): string {
     // Transform user's date to a timestamp
     const date = new Date(user.date);
     const timestamp = Math.floor(date.getTime() / 1000);
@@ -15,5 +13,3 @@ function userToString(user: GitHubUser): string {
 
     return `${user.name} <${user.email}> ${timestamp} ${timezone}`;
 }
-
-export default userToString;

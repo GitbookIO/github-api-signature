@@ -1,8 +1,6 @@
-/* @flow */
-
 import test from 'ava';
-import generateKeyPair from '../generateKeyPair';
-import type { UserInformations } from '../types';
+import { generateKeyPair } from '../generateKeyPair';
+import { UserInformations } from '../types';
 
 test('generate a key pair', async t => {
     const passphrase = 'my secret phrase';

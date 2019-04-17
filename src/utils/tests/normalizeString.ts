@@ -1,7 +1,5 @@
-/* @flow */
-
 import test from 'ava';
-import normalizeString from '../normalizeString';
+import { normalizeString } from '../normalizeString';
 
 test('trim the string', t => {
     const str = '   test\ntext\n';

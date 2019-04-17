@@ -1,11 +1,9 @@
-/* @flow */
-
 import test from 'ava';
 import * as openpgp from 'openpgp';
-import createSignature from '../createSignature';
-import generateKeyPair from '../generateKeyPair';
+import { createSignature } from '../createSignature';
+import { generateKeyPair } from '../generateKeyPair';
+import { CommitPayload, UserInformations } from '../types';
 import { commitToString } from '../utils';
-import type { UserInformations, CommitPayload } from '../types';
 
 test('generate a valid PGP signature for the provided payload', async t => {
     // Generate a key pair
@@ -38,11 +36,9 @@ test('generate a valid PGP signature for the provided payload', async t => {
 
     // Verify signature
     const verified = await openpgp.verify({
-        message: openpgp.message.fromBinary(
-            Buffer.from(commitToString(commit), 'utf8')
-        ),
-        signature: openpgp.signature.readArmored(signature),
-        publicKeys: openpgp.key.readArmored(publicKey).keys
+        message: openpgp.message.fromText(commitToString(commit)),
+        signature: await openpgp.signature.readArmored(signature),
+        publicKeys: (await openpgp.key.readArmored(publicKey)).keys
     });
     t.true(verified.signatures[0].valid);
 });

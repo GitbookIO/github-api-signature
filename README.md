@@ -1,7 +1,7 @@
 # github-api-signature
 
 [![npm version](https://badge.fury.io/js/github-api-signature.svg)](https://badge.fury.io/js/github-api-signature)
-[![Build Status](https://travis-ci.org/GitbookIO/github-api-signature.svg?branch=master)](https://travis-ci.org/GitbookIO/github-api-signature)
+[![CircleCI](https://circleci.com/gh/GitbookIO/github-api-signature.svg?style=svg)](https://circleci.com/gh/GitbookIO/github-api-signature)
 
 Node.js signature generator for GitHub API using a PGP key.
 

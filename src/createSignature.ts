@@ -13,8 +13,16 @@ export async function createSignature(
     passphrase: string
 ): Promise<string> {
     // Decrypt the privateKey
-    const privateKeyObj = (await openpgp.key.readArmored(privateKey)).keys[0];
-    await privateKeyObj.decrypt(passphrase);
+    const decodedKey = await openpgp.key.readArmored(privateKey);
+    if (decodedKey.err) {
+        throw decodedKey.err[0];
+    }
+
+    const [privateKeyObj] = decodedKey.keys;
+    const isDecrypted = await privateKeyObj.decrypt(passphrase);
+    if (!isDecrypted) {
+        throw new Error('Failed to decrypt private key using given passphrase');
+    }
 
     const { signature } = await openpgp.sign({
         message: openpgp.message.fromText(commitToString(commit)),

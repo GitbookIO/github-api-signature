@@ -1,6 +1,0 @@
-language: node_js
-node_js: "stable"
-# Use yarn
-cache: yarn
-# Run tests
-script: yarn run test

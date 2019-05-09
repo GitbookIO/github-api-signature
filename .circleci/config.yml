@@ -1,0 +1,106 @@
+# Common docker image used acrossed jobs
+docker_image: &docker_image
+  - image: circleci/node:8.15.0
+
+# Cache key for node_modules
+dependencies_key: &dependencies_key 'modules-{{ checksum "yarn.lock" }}'
+dependencies_cache: &dependencies_cache
+  name: Restoring Node dependencies
+  keys:
+    - *dependencies_key
+
+# Cache keys for yarn cache
+yarn_cache_main_key: &yarn_cache_main_key 'yarn-cache-{{ checksum "yarn.lock" }}'
+yarn_cache_keys: &yarn_cache_keys
+  - *yarn_cache_main_key
+  - 'yarn-cache-'
+yarn_cache: &yarn_cache
+  name: Restoring yarn cache
+  keys: *yarn_cache_keys
+
+# CircleCI Jobs
+version: 2.1
+jobs:
+  #
+  # Install and cache dependencies before running tests
+  #
+  install:
+    docker: *docker_image
+    steps:
+      - checkout
+      # Restore yarn cache from lockfile if possible
+      - restore_cache: *yarn_cache
+      # Restore node_modules from lockfile if possible
+      - restore_cache: *dependencies_cache
+      # Actually install all dependencies
+      - run:
+          name: Installing dependencies
+          command: yarn --frozen-lockfile
+      # Save yarn cache for future builds
+      - save_cache:
+          name: Saving yarn cache
+          key: *yarn_cache_main_key
+          paths:
+            - ~/.cache/yarn
+      # Save root node_modules for future builds and next steps
+      - save_cache:
+          name: Saving Node dependencies
+          key: *dependencies_key
+          paths:
+            - ./node_modules
+  #
+  # Run the unit tests
+  #
+  unit-tests:
+    docker: *docker_image
+    steps:
+      - checkout
+      # Restore saved node_modules
+      - restore_cache: *dependencies_cache
+      # Run the tests
+      - run:
+          name: Running tests
+          command: yarn run test:ava
+  #
+  # Lint the code
+  #
+  lint-ts:
+    docker: *docker_image
+    steps:
+      - checkout
+      # Restore saved node_modules
+      - restore_cache: *dependencies_cache
+      # Run lint
+      - run:
+          name: Linting code
+          command: yarn run test:lint
+  #
+  # Check Typescript types
+  #
+  check-ts:
+    docker: *docker_image
+    steps:
+      - checkout
+      # Restore saved node_modules
+      - restore_cache: *dependencies_cache
+      # Run check
+      - run:
+          name: Checking TS code
+          command: yarn run test:types
+
+
+# CircleCI main workflow
+workflows:
+  version: 2
+  test:
+    jobs:
+      - install
+      - unit-tests:
+          requires:
+            - install
+      - lint-ts:
+          requires:
+            - install
+      - check-ts:
+          requires:
+            - install

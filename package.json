@@ -27,7 +27,7 @@
   },
   "scripts": {
     "build": "rm -rf lib/ && tsc --build tsconfig.json",
-    "prepublish": "yarn run test && yarn run build",
+    "prepublishOnly": "yarn run test && yarn run build",
     "test": "yarn run test:ava && yarn run test:lint && yarn run test:types",
     "test:lint": "tslint src/**/*.ts",
     "test:types": "tsc",

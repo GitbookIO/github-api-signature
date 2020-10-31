@@ -1,6 +1,6 @@
 # Common docker image used acrossed jobs
 docker_image: &docker_image
-  - image: circleci/node:8.15.0
+  - image: circleci/node:12.18.2
 
 # Cache key for node_modules
 dependencies_key: &dependencies_key 'modules-{{ checksum "yarn.lock" }}'

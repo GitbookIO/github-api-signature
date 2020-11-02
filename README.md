@@ -81,7 +81,9 @@ This method returns a `Promise` containing a `string` which is the PGP signature
 
 Use this method with the same payload that you would send to the GitHub API `POST /repos/:owner/:repo/git/commits` endpoint.
 
-To use this method, the `author` argument is **mandatory**, as opposed to the optional argument for the API. This is necessary since we need to generate the commit message string with the same `date` argument as GitHub will do to verify the signature.
+It accepts either an already git-computed commit payload (see [GitHub's example](https://developer.github.com/v3/git/commits/#example-input)) which is the git content for a commit object, or a `CommitPayload` object.
+
+When using a `CommitPayload` object, the `author` argument is **mandatory**, as opposed to the optional argument for the API. This is necessary since we need to generate the commit message string with the same `date` argument as GitHub will do to verify the signature.
 
 The `committer` argument is still optional and will default to the `author` value if omitted.
 
@@ -90,7 +92,7 @@ In the following example, the commit will be signed for `Dohn Joe`. Hence, `priv
 ###### Usage
 
 ```js
-import { createSignature } from 'github-api-signature';
+import { createSignature, commitToString } from 'github-api-signature';
 
 const privateKey: string = `-----BEGIN PGP PRIVATE KEY BLOCK-----
 
@@ -117,6 +119,7 @@ const commit: CommitPayload = {
     }
 };
 
+// Using a CommitPayload object
 createSignature(commit, privateKey, passphrase)
 .then((signature: string) => {
     // signature = `-----BEGIN PGP SIGNATURE-----
@@ -133,13 +136,21 @@ createSignature(commit, privateKey, passphrase)
     // https://developer.github.com/v3/git/commits/#create-a-commit
     // POST /repos/:owner/:repo/git/commits
 });
+
+// Using a git-computed commit payload string
+// commitToString returns the same format as "git cat-file -p <commit-sha>"
+const commitStr = commitToString(commit);
+createSignature(commitStr, privateKey, passphrase)
+.then((signature: string) => {
+    // ...
+});
 ```
 
 ###### Type definitions
 
 ```js
 async function createSignature(
-    commit: CommitPayload,
+    commit: CommitPayload | string,
     privateKey: string,
     passphrase: string
 ): Promise<string> {}

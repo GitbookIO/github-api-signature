@@ -8,7 +8,9 @@ import { commitToString, normalizeString } from './utils';
  * https://developer.github.com/v3/git/commits/#create-a-commit
  */
 export async function createSignature(
-    commit: CommitPayload,
+    // Accepts either a commit defails object
+    // or the already computed commit string
+    commit: CommitPayload | string,
     privateKey: string,
     passphrase: string
 ): Promise<string> {
@@ -24,8 +26,12 @@ export async function createSignature(
         throw new Error('Failed to decrypt private key using given passphrase');
     }
 
+    // Convert commit object to a string if needed
+    const commitString =
+        typeof commit === 'string' ? commit : commitToString(commit);
+
     const { signature } = await openpgp.sign({
-        message: openpgp.message.fromText(commitToString(commit)),
+        message: openpgp.message.fromText(commitString),
         privateKeys: [privateKeyObj],
         detached: true
     });

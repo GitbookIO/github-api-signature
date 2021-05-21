@@ -14,11 +14,10 @@
   "author": "jpreynat <johan.preynat@gmail.com>",
   "license": "Apache-2.0",
   "dependencies": {
-    "openpgp": "4.10.8",
+    "openpgp": "5.0.0-2",
     "pad": "3.2.0"
   },
   "devDependencies": {
-    "@types/openpgp": "4.4.14",
     "ava": "3.13.0",
     "ts-node": "^8.1.0",
     "tslint": "^5.16.0",

@@ -41,9 +41,10 @@ const user: UserInformations = {
 
 // Optional number of bits for the generated RSA keys pair.
 // Defaults to the maximum value 4096.
-const numBits = 4096;
+const rsaBits = 4096;
+const type: 'ecc' | 'rsa' = 'ecc';
 
-generateKeyPair(user, passphrase, numBits)
+generateKeyPair(user, passphrase, rsaBits, type)
 .then((keyPair: KeyPair) => {
     // keyPair = {
     //     publicKey: '-----BEGIN PGP PUBLIC KEY BLOCK-----...',
@@ -61,8 +62,9 @@ generateKeyPair(user, passphrase, numBits)
 async function generateKeyPair(
     user: UserInformations,
     passphrase: string,
-    numBits?: number = 4096
-): Promise<KeyPair> {}
+    type: 'ecc' | 'rsa' = 'ecc',
+    rsaBits: number = 4096
+): Promise<KeyPair>
 
 type UserInformations = {
     name: string,

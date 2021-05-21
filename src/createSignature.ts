@@ -1,4 +1,4 @@
-import * as openpgp from 'openpgp';
+import { createMessage, decryptKey, readKey, sign } from 'openpgp';
 import { CommitPayload } from './types';
 import { commitToString, normalizeString } from './utils';
 
@@ -15,14 +15,15 @@ export async function createSignature(
     passphrase: string
 ): Promise<string> {
     // Decrypt the privateKey
-    const decodedKey = await openpgp.key.readArmored(privateKey);
-    if (decodedKey.err) {
-        throw decodedKey.err[0];
-    }
+    const decodedKey = await readKey({
+        armoredKey: privateKey
+    });
 
-    const [privateKeyObj] = decodedKey.keys;
-    const isDecrypted = await privateKeyObj.decrypt(passphrase);
-    if (!isDecrypted) {
+    const decryptedKey = await decryptKey({
+        privateKey: decodedKey,
+        passphrase
+    });
+    if (!decryptedKey.isDecrypted()) {
         throw new Error('Failed to decrypt private key using given passphrase');
     }
 
@@ -30,9 +31,11 @@ export async function createSignature(
     const commitString =
         typeof commit === 'string' ? commit : commitToString(commit);
 
-    const { signature } = await openpgp.sign({
-        message: openpgp.message.fromText(commitString),
-        privateKeys: [privateKeyObj],
+    const signature = await sign({
+        message: await createMessage({
+            text: commitString
+        }),
+        privateKeys: decryptedKey,
         detached: true
     });
 

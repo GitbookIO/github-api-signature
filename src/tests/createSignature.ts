@@ -43,7 +43,7 @@ test('generate a valid PGP signature for the provided payload', async t => {
         signature: await readSignature({
             armoredSignature: signature
         }),
-        publicKeys: await readKey({
+        verificationKeys: await readKey({
             armoredKey: publicKey
         })
     });
@@ -89,7 +89,7 @@ test('generate a valid PGP signature for the provided commit string', async t =>
         signature: await readSignature({
             armoredSignature: signature
         }),
-        publicKeys: await readKey({
+        verificationKeys: await readKey({
             armoredKey: publicKey
         })
     });

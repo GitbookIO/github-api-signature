@@ -1,4 +1,4 @@
-import { createMessage, decryptKey, readKey, sign } from 'openpgp';
+import { createMessage, decryptKey, readPrivateKey, sign } from 'openpgp';
 import { CommitPayload } from './types';
 import { commitToString, normalizeString } from './utils';
 
@@ -15,7 +15,7 @@ export async function createSignature(
     passphrase: string
 ): Promise<string> {
     // Decrypt the privateKey
-    const decodedKey = await readKey({
+    const decodedKey = await readPrivateKey({
         armoredKey: privateKey
     });
 
@@ -35,7 +35,7 @@ export async function createSignature(
         message: await createMessage({
             text: commitString
         }),
-        privateKeys: decryptedKey,
+        signingKeys: decryptedKey,
         detached: true
     });
 
